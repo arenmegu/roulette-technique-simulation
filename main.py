@@ -1,4 +1,43 @@
+"""
+================================================================================
+Projet : Simulation d'une stratégie de roulette
+Auteur : arenmegu
+Date : 09/09/2024
+Version : 0.2
+================================================================================
+
+Description :
+    Ce programme est une simulation d'une stratégie pour gagner à la roulette.
+    Les utilisateurs peuvent simuler grâce à ce programme une roulette et observer des estimations concernant cette stratégie
+
+Outils utilisés :
+    - Python : Pour le développement du programme
+    - MatPlotLib : Pour la gestion des graphes
+    - Random : Pour générer un nombre aléatoire (via une façon déterministe)
+    - System : Pour mettre fin au programme
+    
+Fonctionnalités :
+    - Simuler la roulette
+    - Affichage Textuel et Graphique d'une simulation
+
+Comment utiliser le programme :
+    1. Merci de consulter le README
+    
+Notes :
+    - Ce projet est encore en développement et non fini.
+    - Le code est structuré selon les conventions de base de python
+    
+Licence :
+    Ce projet est sous licence MIT. Vous êtes libre de l'utiliser, de le modifier et
+    de le distribuer à condition de conserver les mentions de l'auteur original.
+
+================================================================================
+"""
+
+
 from random import randint 
+import sys
+import matplotlib.pyplot as plt
 
 # -------------------------------------------------------------------------
 # Initialisation des variables : nombre de victoires/défaites, tableau pour
@@ -26,19 +65,6 @@ def roulette():
     """
     return randint(0, 36)
 
-
-def information_numéro(i):
-    """
-    Afficher les informations relatives au numéro donné en paramètre à savoir le numéro, le nombre de fois qu'il a été tiré et la probabilité de tomber dessus
-
-    Paramètre
-    -------
-    int
-        Le numéro dont il faut afficher les informations
-    """
-    print("Numéro ",i," - Nombre de tirages : ", tirage_nombre[i], " - Pourcentage de chance : ", tirage_nombre[i]/(nb_victoires+nb_défaites) * 100, " %")
-
-
 def tirage():
     """
     Fonction qui va simuler un tour de roulette
@@ -53,6 +79,31 @@ def tirage():
     else :
         nb_victoires += 1
 
+def simulation_roulette():
+    """
+    Fonction qui va simuler 10 000 000 tours de roulette
+    """
+    for i in range(10000000):
+            tirage()
+
+def information_numéro(i):
+    """
+    Afficher les informations relatives au numéro donné en paramètre à savoir le numéro, le nombre de fois qu'il a été tiré et la probabilité de tomber dessus
+
+    Paramètre
+    -------
+    int
+        Le numéro dont il faut afficher les informations
+    """
+    print("Numéro ",i," - Nombre de tirages : ", tirage_nombre[i], " - Pourcentage de chance : ", tirage_nombre[i]/(nb_victoires+nb_défaites) * 100, " %")
+
+def affichage_information_numéro():
+    """
+    Affiche les informations relatives à chaque numéro présent sur le plateau (donc les entiers naturels présent dans [0,36])
+    """
+    for i in range(37):
+            information_numéro(i)
+
 
 # -------------------------------------------------------------------------
 # Partie affichage
@@ -60,18 +111,38 @@ def tirage():
 
 if __name__ == '__main__':
 
-    for i in range(10000000):
-        tirage()
+    # Menu principal avec 4 entrées disponibles
+    while(True):
+        print("\033cMerci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
+        entree = int(input())
+        if entree == 4:
+            print("Sortie en cours...")
+            sys.exit(0)
+        if not(entree == 1 or entree == 2 or entree == 3):
+            print("Erreur, entrée non reconnue")
+        else :
+            break
 
-    print("\033cNombre de Victoires : ", nb_victoires)
-    print("Nombre de Défaites : ", nb_défaites)
+    # Génération de toute la roulette
+    print("\033cSimulation en cours...")
+    simulation_roulette()
+    print("\033c")
 
-    print("Pourcentage de chance de gagner : ", (nb_victoires/(nb_victoires + nb_défaites)) * 100, " %")
-    print("Pourcentage de chance de perdre : ", (nb_défaites/(nb_victoires + nb_défaites)) * 100, " %")
+    # Affichage Textuel
+    if (entree == 1 or entree == 3):
+        print("Nombre de Victoires : ", nb_victoires)
+        print("Nombre de Défaites : ", nb_défaites)
 
-    print("Pourcentage de chance de tomber sur la ligne forte : ", (ligne_forte/(nb_victoires + nb_défaites)) * 100, " %")
+        print("Pourcentage de chance de gagner : ", (nb_victoires/(nb_victoires + nb_défaites)) * 100, " %")
+        print("Pourcentage de chance de perdre : ", (nb_défaites/(nb_victoires + nb_défaites)) * 100, " %")
 
-    print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
-    if (input() == "oui"):
-        for i in range(37):
-            information_numéro(i);
+        print("Pourcentage de chance de tomber sur la ligne forte : ", (ligne_forte/(nb_victoires + nb_défaites)) * 100, " %")
+
+        print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
+        if (input() == "oui"):
+            affichage_information_numéro()
+            
+    # Affichage Graphique
+    if entree == 2 or entree == 3:
+        # TODO
+        pass

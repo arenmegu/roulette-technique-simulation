@@ -6,8 +6,8 @@ Avant propos : Les jeux d'argent, bien qu'ils puissent offrir des moments d'exci
 
 ---------------------------------------------------------------------------------------------------
 
-La semaine dernière, j'ai fais la découverte d'une technique qui permet de gagner très souvent à la roulette. Cette technique permettrait de gagner et de se faire beaucoup d'argent.
-Je n'étais pas convaincu mais j'ai quand même voulu tester afin de se baser sur des données solides.
+La semaine dernière, j'ai fais la découverte d'une technique qui permet de gagner très souvent à la roulette. Cette technique permettrait de gagner et donc de se faire beaucoup d'argent.
+Je n'étais pas convaincu mais j'ai quand même voulu tester afin de se baser sur des données solides et exploitable.
 J'ai donc réalisé ce projet en python afin de réaliser quelques statistiques et analyser les données.
 
 Voici la stratégie :
