@@ -12,7 +12,7 @@ J'ai donc réalisé ce projet en python afin de réaliser quelques statistiques 
 
 Voici la stratégie :
 - Se procurer au moins 72 jetons.
-- Miser 1 jeton sur ces 24 cases : ![Schéma Roulette](image.png)
+- Miser 1 jeton sur ces 24 cases : ![Schéma Roulette](assets/roulette.png)
 En cas de scénario perdant, on peut rejouer 2 fois donc on ne peut que gagner avec cette technique.
 En cas de scénario gagnant, on réalise une plus-value de 12 jetons car on en perd 24 au moment de la mise puis on en gagne 36 après avoir gagné. Il ne reste plus qu'à jouer à l'infini et récupérer le bénéfice aqcuéri tous les 12 jetons car il suffit de gagner 6 fois pour doubler sa mise, sécuriser sa position puis retirer les 72 jetons
 

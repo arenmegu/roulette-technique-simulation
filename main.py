@@ -19,13 +19,12 @@ Outils utilisés :
 Fonctionnalités :
     - Simuler la roulette
     - Affichage Textuel et Graphique d'une simulation
-
-Comment utiliser le programme :
-    1. Merci de consulter le README
     
 Notes :
     - Ce projet est encore en développement et non fini.
     - Le code est structuré selon les conventions de base de python
+    - On utilise le CamelCase pour le nom des fonctions/méthodes et le snake_case pour le nom des variables
+    - L'intégralité du projet sera rédigé en français
     
 Licence :
     Ce projet est sous licence MIT. Vous êtes libre de l'utiliser, de le modifier et
@@ -79,14 +78,14 @@ def tirage():
     else :
         nb_victoires += 1
 
-def simulation_roulette():
+def simulationRoulette():
     """
     Fonction qui va simuler 10 000 000 tours de roulette
     """
     for i in range(10000000):
             tirage()
 
-def information_numéro(i):
+def informationNumero(i):
     """
     Afficher les informations relatives au numéro donné en paramètre à savoir le numéro, le nombre de fois qu'il a été tiré et la probabilité de tomber dessus
 
@@ -97,13 +96,66 @@ def information_numéro(i):
     """
     print("Numéro ",i," - Nombre de tirages : ", tirage_nombre[i], " - Pourcentage de chance : ", tirage_nombre[i]/(nb_victoires+nb_défaites) * 100, " %")
 
-def affichage_information_numéro():
+def affichageInformationNuméro():
     """
     Affiche les informations relatives à chaque numéro présent sur le plateau (donc les entiers naturels présent dans [0,36])
     """
     for i in range(37):
-            information_numéro(i)
+            informationNumero(i)
 
+def affichageMenuPrincipal():
+    print("""\033c
+        >>=======================================================<<
+        ||                                                       ||
+        ||   ____             _      _   _                       ||
+        ||  |  _ \ ___  _   _| | ___| |_| |_ ___                 ||
+        ||  | |_) / _ \| | | | |/ _ | __| __/ _ \                ||
+        ||  |  _ | (_) | |_| | |  __| |_| ||  __/                ||
+        ||  |_| \_\___/ \__,_|_|\___|\__|\__\___|                ||
+        ||   _____         _           _                         ||
+        ||  |_   ____  ___| |__  _ __ (_) __ _ _   _  ___        ||
+        ||    | |/ _ \/ __| '_ \| '_ \| |/ _` | | | |/ _ \       ||
+        ||    | |  __| (__| | | | | | | | (_| | |_| |  __/       ||
+        ||    |_|\___|\___|_| |_|_| |_|_|\__, |\__,_|\___|       ||
+        ||                                  |_|                  ||
+        ||   ____  _                 _       _   _               ||
+        ||  / ___|(_)_ __ ___  _   _| | __ _| |_(_) ___  _ __    ||
+        ||  \___ \| | '_ ` _ \| | | | |/ _` | __| |/ _ \| '_ \   ||
+        ||   ___) | | | | | | | |_| | | (_| | |_| | (_) | | | |  ||
+        ||  |____/|_|_| |_| |_|\__,_|_|\__,_|\__|_|\___/|_| |_|  ||
+        ||                                                       ||
+        >>=======================================================<<""")
+    print("Merci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
+
+def menuPrincipal():
+    affichageMenuPrincipal()
+    entree = int(input())
+    while(True):
+        match entree :
+            case 1 :
+                return (True,False)
+            case 2 :
+                return (False,True)
+            case 3 :
+                return (True,True)
+            case 4 :
+                print("Sortie en cours...")
+                sys.exit(0)
+            case _ :
+                print("Erreur, entrée non reconnue")
+
+def affichageResultatsTextuel():
+    print("Nombre de Victoires : ", nb_victoires)
+    print("Nombre de Défaites : ", nb_défaites)
+
+    print("Pourcentage de chance de gagner : ", (nb_victoires/(nb_victoires + nb_défaites)) * 100, " %")
+    print("Pourcentage de chance de perdre : ", (nb_défaites/(nb_victoires + nb_défaites)) * 100, " %")
+
+    print("Pourcentage de chance de tomber sur la ligne forte : ", (ligne_forte/(nb_victoires + nb_défaites)) * 100, " %")
+
+    print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
+    if (input() == "oui"):
+        affichageInformationNuméro()
 
 # -------------------------------------------------------------------------
 # Partie affichage
@@ -112,37 +164,20 @@ def affichage_information_numéro():
 if __name__ == '__main__':
 
     # Menu principal avec 4 entrées disponibles
-    while(True):
-        print("\033cMerci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
-        entree = int(input())
-        if entree == 4:
-            print("Sortie en cours...")
-            sys.exit(0)
-        if not(entree == 1 or entree == 2 or entree == 3):
-            print("Erreur, entrée non reconnue")
-        else :
-            break
-
-    # Génération de toute la roulette
-    print("\033cSimulation en cours...")
-    simulation_roulette()
-    print("\033c")
+    choix = menuPrincipal()
 
     # Affichage Textuel
-    if (entree == 1 or entree == 3):
-        print("Nombre de Victoires : ", nb_victoires)
-        print("Nombre de Défaites : ", nb_défaites)
+    if (choix[0]):
+        # Génération de toute la roulette
+        print("\033cSimulation en cours...")
+        simulationRoulette()
+        print("\033c")
+        affichageResultatsTextuel()
 
-        print("Pourcentage de chance de gagner : ", (nb_victoires/(nb_victoires + nb_défaites)) * 100, " %")
-        print("Pourcentage de chance de perdre : ", (nb_défaites/(nb_victoires + nb_défaites)) * 100, " %")
+        if (choix[1]):
+            # TODO AFFICHAGE GRAPHIQUE A FAIRE
+            pass
 
-        print("Pourcentage de chance de tomber sur la ligne forte : ", (ligne_forte/(nb_victoires + nb_défaites)) * 100, " %")
-
-        print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
-        if (input() == "oui"):
-            affichage_information_numéro()
-            
-    # Affichage Graphique
-    if entree == 2 or entree == 3:
-        # TODO
+    else :
+        # TODO AFFICHAGE GRAPHIQUE A FAIRE
         pass
