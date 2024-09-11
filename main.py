@@ -3,7 +3,7 @@
 Projet : Simulation d'une stratégie de roulette
 Auteur : arenmegu
 Date : 09/09/2024
-Version : 0.2
+Version : 0.3
 ================================================================================
 
 Description :
@@ -66,7 +66,7 @@ def roulette():
 
 def tirage():
     """
-    Fonction qui va simuler un tour de roulette
+    Fonction qui va simuler un tour de roulette en utilisant la stratégie
     """
     global ligne_forte, nb_défaites,nb_victoires
     nombre_tiré = roulette()
@@ -78,11 +78,17 @@ def tirage():
     else :
         nb_victoires += 1
 
-def simulationRoulette():
+def simulationRoulette(nbOccurences):
     """
-    Fonction qui va simuler 10 000 000 tours de roulette
+    Fonction qui va simuler un certain nombre de tours de roulette
+
+    Paramètre
+    -------
+    int
+        Nombre de tours à réaliser
     """
-    for i in range(10000000):
+
+    for i in range(nbOccurences):
             tirage()
 
 def informationNumero(i):
@@ -104,6 +110,13 @@ def affichageInformationNuméro():
             informationNumero(i)
 
 def affichageMenuPrincipal():
+    """
+    Affiche le menu principal : logo + propositions
+    1 - Visualisation Textuelle
+    2 - Visualisation Graphique
+    3 - Visualisation Textuelle et Graphique
+    4 - Sortie du programme
+    """
     print("""\033c
         >>=======================================================<<
         ||                                                       ||
@@ -128,6 +141,14 @@ def affichageMenuPrincipal():
     print("Merci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
 
 def menuPrincipal():
+    """
+    Traitement (backend) du menu principal
+
+    Retour
+    ------
+    tuple[bool,bool]
+        Tuple défini en fonction du choix de l'utilisateur 
+    """
     affichageMenuPrincipal()
     entree = int(input())
     while(True):
@@ -145,6 +166,9 @@ def menuPrincipal():
                 print("Erreur, entrée non reconnue")
 
 def affichageResultatsTextuel():
+    """
+    Affichage des variables globales et affichage des statistiques, réalisé une fois un tirage réalisé
+    """
     print("Nombre de Victoires : ", nb_victoires)
     print("Nombre de Défaites : ", nb_défaites)
 
@@ -157,6 +181,41 @@ def affichageResultatsTextuel():
     if (input() == "oui"):
         affichageInformationNuméro()
 
+def affichageResultatsGraphique():
+    """
+    Toute la partie affichage du modélisation/graphique à réaliser donc TODO
+    """
+    pass
+
+def lancementRouletteTextuelle():
+    """
+    Fonction appelée si on souhaite avoir une simulation textuelle
+    """
+    print("\033cSimulation en cours...")
+    simulationRoulette(10000000)
+    print("\033c")
+    affichageResultatsTextuel()
+
+def lancementRouletteGraphique():
+    """
+    Fonction appelée si on souhaite avoir une simulation graphique
+    """
+    print("\033cSimulation en cours...")
+    simulationRoulette(10000)
+    print("\033c")
+    affichageResultatsGraphique()
+
+def nettoyageValeurs():
+    """
+    Fonction pour nettoyer les valeurs déjà enregistrées
+    """
+    global nb_défaites, nb_victoires, ligne_forte, tirage_nombre
+    nb_victoires = 0
+    nb_défaites = 0
+    ligne_forte = 0
+    tirage_nombre = [0] * 37
+
+
 # -------------------------------------------------------------------------
 # Partie affichage
 # -------------------------------------------------------------------------
@@ -168,16 +227,17 @@ if __name__ == '__main__':
 
     # Affichage Textuel
     if (choix[0]):
-        # Génération de toute la roulette
-        print("\033cSimulation en cours...")
-        simulationRoulette()
-        print("\033c")
-        affichageResultatsTextuel()
+        lancementRouletteTextuelle()
 
-        if (choix[1]):
-            # TODO AFFICHAGE GRAPHIQUE A FAIRE
+    nettoyageValeurs()
+    if (choix[0] and choix[1]):
+        print("Voulez vous démarrer la simulation graphique ?")
+        if((input()) == "oui" ):
             pass
+        else :
+            sys.exit(0)
 
-    else :
-        # TODO AFFICHAGE GRAPHIQUE A FAIRE
+    # Affichage Graphique
+    if (choix[1]):
+        lancementRouletteGraphique()
         pass
