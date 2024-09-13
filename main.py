@@ -233,6 +233,7 @@ if __name__ == '__main__':
     if (choix[0] and choix[1]):
         print("Voulez vous démarrer la simulation graphique ?")
         if((input()) == "oui" ):
+            # TODO CLEAR + APPELER LA FONCTION
             pass
         else :
             sys.exit(0)
