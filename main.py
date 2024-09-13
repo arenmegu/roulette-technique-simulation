@@ -229,12 +229,16 @@ if __name__ == '__main__':
     if (choix[0]):
         lancementRouletteTextuelle()
 
+    # On efface tout le travail fourni pour laisser place à la potentielle simulation graphique
     nettoyageValeurs()
+
+    # On attend confirmation puis on lance la simulation graphique
     if (choix[0] and choix[1]):
         print("Voulez vous démarrer la simulation graphique ?")
         if((input()) == "oui" ):
-            # TODO CLEAR + APPELER LA FONCTION
-            pass
+            lancementRouletteGraphique()
+            affichageResultatsGraphique()
+            sys.exit(0)
         else :
             sys.exit(0)
 
