@@ -3,7 +3,7 @@
 Projet : Simulation d'une stratégie de roulette
 Auteur : arenmegu
 Date : 09/09/2024
-Version : 0.3
+Version : 1.0
 ================================================================================
 
 Description :
@@ -12,16 +12,17 @@ Description :
 
 Outils utilisés :
     - Python : Pour le développement du programme
-    - MatPlotLib : Pour la gestion des graphes
+    - MatPlotLib : Pour la mise en place de la partie graphique
     - Random : Pour générer un nombre aléatoire (via une façon déterministe)
     - System : Pour mettre fin au programme
     
 Fonctionnalités :
     - Simuler la roulette
     - Affichage Textuel et Graphique d'une simulation
+    - Gestion des entrées
     
 Notes :
-    - Ce projet est encore en développement et non fini.
+    - Ce projet est dans sa première version, n'hésitez pas à l'améliorer
     - Le code est structuré selon les conventions de base de python
     - On utilise le CamelCase pour le nom des fonctions/méthodes et le snake_case pour le nom des variables
     - L'intégralité du projet sera rédigé en français
@@ -33,21 +34,33 @@ Licence :
 ================================================================================
 """
 
+#-------------------------------------------------------------------------
+# Importations des modules
+#-------------------------------------------------------------------------
 
 from random import randint 
 import sys
 import matplotlib.pyplot as plt
 
 # -------------------------------------------------------------------------
-# Initialisation des variables : nombre de victoires/défaites, tableau pour
-# stocker le nombre de fois qu'un numéro tombe ainsi que le nombre de fois 
-# que la "ligne forte" est tirée
+# Initialisation des variables 
+# nb_victoires -> compteur pour le nombre de victoires
+# nb_défaites -> compteur pour le nombre de défaites
+# ligne_forte -> compteur pour le nombre de fois où le gagnant est un nombre situé au milieu
+# tirage_nombre -> tableau de 36 cases qui compte le nombre de fois que chaque numéro tombe
+# wallet -> jetons disponible à utiliser
+# tab_x -> pour modélisation du graphique : tableau contenant le numéro d'essai
+# tab_y -> pour modélisation du graphique : tableau contenant l'état du wallet pour chaque essai
 # -------------------------------------------------------------------------
 
 nb_victoires = 0
 nb_défaites = 0
 ligne_forte = 0
 tirage_nombre = [0] * 37
+
+wallet = 1000
+tab_x = [0] * 10000
+tab_y = [0] * 10000
 
 # -------------------------------------------------------------------------
 # Fonctions
@@ -66,10 +79,11 @@ def roulette():
 
 def tirage():
     """
-    Fonction qui va simuler un tour de roulette en utilisant la stratégie
+    Fonction qui va simuler un tour de roulette en utilisant la stratégie initiale
     """
-    global ligne_forte, nb_défaites,nb_victoires
+    global ligne_forte, nb_défaites,nb_victoires,wallet
     nombre_tiré = roulette()
+    wallet -= 24
     tirage_nombre[nombre_tiré] += 1
     if nombre_tiré in [2,8,11,14,17,20,23,26,29]:
         ligne_forte +=1
@@ -77,19 +91,24 @@ def tirage():
         nb_défaites += 1
     else :
         nb_victoires += 1
+        wallet += 36
 
-def simulationRoulette(nbOccurences):
+def simulationRouletteTexuelle():
     """
-    Fonction qui va simuler un certain nombre de tours de roulette
-
-    Paramètre
-    -------
-    int
-        Nombre de tours à réaliser
+    Fonction qui va simuler 10 M d'essais
     """
-
-    for i in range(nbOccurences):
+    for i in range(10000000):
             tirage()
+
+def simulationRouletteGraphique():
+    """
+    Fonction qui va simuler 10k essais
+    """
+    for i in range(10000):
+            tirage()
+            tab_x[i] = i+1
+            tab_y[i] = wallet
+
 
 def informationNumero(i):
     """
@@ -139,6 +158,7 @@ def affichageMenuPrincipal():
         ||                                                       ||
         >>=======================================================<<""")
     print("Merci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
+
 def menuPrincipal():
     """
     Traitement (backend) du menu principal
@@ -191,16 +211,23 @@ def affichageResultatsTextuel():
 
 def affichageResultatsGraphique():
     """
-    Toute la partie affichage du modélisation/graphique à réaliser donc TODO
+    Toute la partie construction/affichage du graphique
     """
-    pass
+    plt.scatter(tab_x, tab_y, color="blue", label="Points")
+    plt.plot(tab_x, tab_y, color="green", linestyle="-", label="Ligne")
+    plt.title("Simulation sur 10 000 tirages")
+    plt.xlabel("Numéro de l'essai")
+    plt.ylabel("Argent possédé")
+    plt.legend()
+    plt.show()
 
 def lancementRouletteTextuelle():
     """
     Fonction appelée si on souhaite avoir une simulation textuelle
     """
     print("\033cSimulation en cours...")
-    simulationRoulette(10000000)
+    simulationRouletteTexuelle()
+    print("\033c")
     affichageResultatsTextuel()
 
 def lancementRouletteGraphique():
@@ -208,20 +235,22 @@ def lancementRouletteGraphique():
     Fonction appelée si on souhaite avoir une simulation graphique
     """
     print("\033cSimulation en cours...")
-    simulationRoulette(10000)
+    simulationRouletteGraphique()
     print("\033c")
     affichageResultatsGraphique()
 
-def nettoyageValeurs():
+def réinitialisation():
     """
-    Fonction pour nettoyer les valeurs déjà enregistrées
+    Fonction de réinitialisation, on réassigne les valeurs d'origine du programmme après un potentiel travail réalisé dessus
     """
-    global nb_défaites, nb_victoires, ligne_forte, tirage_nombre
+    global nb_défaites, nb_victoires, ligne_forte, tirage_nombre, tab_x, tab_y, wallet
     nb_victoires = 0
     nb_défaites = 0
     ligne_forte = 0
+    tab_x = [0] * 10000
+    tab_y = [0] * 10000
     tirage_nombre = [0] * 37
-
+    wallet = 1000
 
 # -------------------------------------------------------------------------
 # Partie affichage
@@ -237,19 +266,25 @@ if __name__ == '__main__':
         lancementRouletteTextuelle()
 
     # On efface tout le travail antérieur pour laisser place à la potentielle simulation graphique
-    nettoyageValeurs()
+    réinitialisation()
 
     # On attend confirmation puis on lance la simulation graphique
     if (choix[0] and choix[1]):
-        print("Voulez vous démarrer la simulation graphique ?")
-        if((input()) == "oui" ):
-            lancementRouletteGraphique()
-            affichageResultatsGraphique()
-            sys.exit(0)
-        else :
-            sys.exit(0)
+        #Créer un SAS
+        print("Voulez vous démarrer la simulation graphique ?\n1 - Oui\n2 - Non")
+
+        while (True):
+            entree = int(input("\n>> "))
+            match entree :
+                case 1 :
+                    lancementRouletteGraphique()
+                    sys.exit(0)
+                case 2 :
+                    sys.exit(0)
+                case _ :
+                    print("Entrée non reconnue")
 
     # Affichage Graphique
     if (choix[1]):
         lancementRouletteGraphique()
-        pass
+    
