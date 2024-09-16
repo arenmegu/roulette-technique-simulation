@@ -139,7 +139,6 @@ def affichageMenuPrincipal():
         ||                                                       ||
         >>=======================================================<<""")
     print("Merci de sélectionner parmi les propositions :\n1 - Visualisation Textuelle\n2 - Visualisation Graphique\n3 - Visualisation Texuelle et Graphique\n4 - Quitter")
-
 def menuPrincipal():
     """
     Traitement (backend) du menu principal
@@ -150,7 +149,7 @@ def menuPrincipal():
         Tuple défini en fonction du choix de l'utilisateur 
     """
     affichageMenuPrincipal()
-    entree = int(input())
+    entree = int(input("\n>> "))
     while(True):
         match entree :
             case 1 :
@@ -169,7 +168,7 @@ def affichageResultatsTextuel():
     """
     Affichage des variables globales et affichage des statistiques, réalisé une fois un tirage réalisé
     """
-    print("Nombre de Victoires : ", nb_victoires)
+    print("\033cNombre de Victoires : ", nb_victoires)
     print("Nombre de Défaites : ", nb_défaites)
 
     print("Pourcentage de chance de gagner : ", (nb_victoires/(nb_victoires + nb_défaites)) * 100, " %")
@@ -178,8 +177,17 @@ def affichageResultatsTextuel():
     print("Pourcentage de chance de tomber sur la ligne forte : ", (ligne_forte/(nb_victoires + nb_défaites)) * 100, " %")
 
     print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
-    if (input() == "oui"):
-        affichageInformationNuméro()
+    print("\n1 - Oui\n2 - Non")
+    while(True):
+        entree = int(input("\n>> "))
+        match entree :
+            case 1 :
+                affichageInformationNuméro()
+                break
+            case 2 :
+                break
+            case _ :
+                print("Entrée non reconnue")
 
 def affichageResultatsGraphique():
     """
@@ -193,7 +201,6 @@ def lancementRouletteTextuelle():
     """
     print("\033cSimulation en cours...")
     simulationRoulette(10000000)
-    print("\033c")
     affichageResultatsTextuel()
 
 def lancementRouletteGraphique():
@@ -229,7 +236,7 @@ if __name__ == '__main__':
     if (choix[0]):
         lancementRouletteTextuelle()
 
-    # On efface tout le travail fourni pour laisser place à la potentielle simulation graphique
+    # On efface tout le travail antérieur pour laisser place à la potentielle simulation graphique
     nettoyageValeurs()
 
     # On attend confirmation puis on lance la simulation graphique
