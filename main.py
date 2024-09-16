@@ -211,15 +211,22 @@ def affichageResultatsTextuel():
 
 def affichageResultatsGraphique():
     """
-    Toute la partie construction/affichage du graphique
+    Construction/affichage du graphique avec améliorations visuelles
     """
-    plt.scatter(tab_x, tab_y, color="blue", label="Points")
-    plt.plot(tab_x, tab_y, color="green", linestyle="-", label="Ligne")
-    plt.title("Simulation sur 10 000 tirages")
-    plt.xlabel("Numéro de l'essai")
-    plt.ylabel("Argent possédé")
-    plt.legend()
+    fenetre = plt.figure(figsize=(10, 6))
+    fenetre.canvas.manager.set_window_title("Résultats de la Simulation")
+    plt.scatter(tab_x, tab_y, color="red", edgecolor="black", s=60, label="Points", alpha=0.7)
+    plt.plot(tab_x, tab_y, color="darkorange", linestyle="--", linewidth=2, label="Ligne")
+    plt.title("Simulation sur 10 000 tirages", fontsize=16, fontweight="bold")
+    plt.xlabel("Numéro de l'essai", fontsize=14)
+    plt.ylabel("Argent possédé", fontsize=14)
+    plt.grid(True, which="both", linestyle="--", linewidth=0.5)
+    plt.axhline(0, color="black",linewidth=1)
+    plt.axvline(0, color="black",linewidth=1)
+    plt.legend(loc="upper left", fontsize=12)
+    plt.tight_layout()
     plt.show()
+
 
 def lancementRouletteTextuelle():
     """
@@ -252,6 +259,18 @@ def réinitialisation():
     tirage_nombre = [0] * 37
     wallet = 1000
 
+def passerelleTextuelleVersGraphique():
+    while (True):
+            entree = int(input("\n>> "))
+            match entree :
+                case 1 :
+                    lancementRouletteGraphique()
+                    sys.exit(0)
+                case 2 :
+                    sys.exit(0)
+                case _ :
+                    print("Entrée non reconnue")
+
 # -------------------------------------------------------------------------
 # Partie affichage
 # -------------------------------------------------------------------------
@@ -268,23 +287,11 @@ if __name__ == '__main__':
     # On efface tout le travail antérieur pour laisser place à la potentielle simulation graphique
     réinitialisation()
 
-    # On attend confirmation puis on lance la simulation graphique
+    # On attend confirmation puis on rentre dans le SAS
     if (choix[0] and choix[1]):
-        #Créer un SAS
         print("Voulez vous démarrer la simulation graphique ?\n1 - Oui\n2 - Non")
-
-        while (True):
-            entree = int(input("\n>> "))
-            match entree :
-                case 1 :
-                    lancementRouletteGraphique()
-                    sys.exit(0)
-                case 2 :
-                    sys.exit(0)
-                case _ :
-                    print("Entrée non reconnue")
+        passerelleTextuelleVersGraphique()
 
     # Affichage Graphique
     if (choix[1]):
         lancementRouletteGraphique()
-    
