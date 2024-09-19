@@ -169,8 +169,8 @@ def menuPrincipal():
         Tuple défini en fonction du choix de l'utilisateur 
     """
     affichageMenuPrincipal()
-    entree = int(input("\n>> "))
     while(True):
+        entree = int(input("\n>> "))
         match entree :
             case 1 :
                 return (True,False)
