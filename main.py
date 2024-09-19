@@ -170,15 +170,15 @@ def menuPrincipal():
     """
     affichageMenuPrincipal()
     while(True):
-        entree = int(input("\n>> "))
+        entree = input("\n>> ")
         match entree :
-            case 1 :
+            case "1" :
                 return (True,False)
-            case 2 :
+            case "2" :
                 return (False,True)
-            case 3 :
+            case "3" :
                 return (True,True)
-            case 4 :
+            case "4" :
                 print("Sortie en cours...")
                 sys.exit(0)
             case _ :
@@ -199,12 +199,12 @@ def affichageResultatsTextuel():
     print("Voulez vous afficher le nombre de tirage et le pourcentage de chance de tomber sur un numéro pour chaque numéro ?")
     print("\n1 - Oui\n2 - Non")
     while(True):
-        entree = int(input("\n>> "))
+        entree = input("\n>> ")
         match entree :
-            case 1 :
+            case "1" :
                 affichageInformationNuméro()
                 break
-            case 2 :
+            case "2" :
                 break
             case _ :
                 print("Entrée non reconnue")
@@ -261,12 +261,12 @@ def réinitialisation():
 
 def passerelleTextuelleVersGraphique():
     while (True):
-            entree = int(input("\n>> "))
+            entree = input("\n>> ")
             match entree :
-                case 1 :
+                case "1" :
                     lancementRouletteGraphique()
                     sys.exit(0)
-                case 2 :
+                case "2" :
                     sys.exit(0)
                 case _ :
                     print("Entrée non reconnue")
