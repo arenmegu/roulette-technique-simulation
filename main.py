@@ -82,8 +82,8 @@ def tirage():
     Fonction qui va simuler un tour de roulette en utilisant la stratégie initiale
     """
     global ligne_forte, nb_défaites,nb_victoires,wallet
-    nombre_tiré = roulette()
     wallet -= 24
+    nombre_tiré = roulette()
     tirage_nombre[nombre_tiré] += 1
     if nombre_tiré in [2,8,11,14,17,20,23,26,29]:
         ligne_forte +=1
@@ -219,7 +219,7 @@ def affichageResultatsGraphique():
     plt.plot(tab_x, tab_y, color="darkorange", linestyle="--", linewidth=2, label="Ligne")
     plt.title("Simulation sur 10 000 tirages", fontsize=16, fontweight="bold")
     plt.xlabel("Numéro de l'essai", fontsize=14)
-    plt.ylabel("Argent possédé", fontsize=14)
+    plt.ylabel("Jetons possédés", fontsize=14)
     plt.grid(True, which="both", linestyle="--", linewidth=0.5)
     plt.axhline(0, color="black",linewidth=1)
     plt.axvline(0, color="black",linewidth=1)
@@ -260,6 +260,7 @@ def réinitialisation():
     wallet = 1000
 
 def passerelleTextuelleVersGraphique():
+    print("Voulez vous démarrer la simulation graphique ?\n1 - Oui\n2 - Non")
     while (True):
             entree = input("\n>> ")
             match entree :
@@ -289,7 +290,6 @@ if __name__ == '__main__':
 
     # On attend confirmation puis on rentre dans le SAS
     if (choix[0] and choix[1]):
-        print("Voulez vous démarrer la simulation graphique ?\n1 - Oui\n2 - Non")
         passerelleTextuelleVersGraphique()
 
     # Affichage Graphique
